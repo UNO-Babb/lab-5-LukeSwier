@@ -4,19 +4,35 @@ import random
 
 def inWord(letter, word):
     """Returns boolean if letter is anywhere in the given word"""
-
+    for character in word:
+        if letter == character:
+            return True
     return False
 
 def inSpot(letter, word, spot):
     """Returns boolean response if letter is in the given spot in the word."""
-
-    return False
+    correctLetter = word[spot]
+    if letter == correctLetter:
+        return True
+    else:
+        return False
 
 def rateGuess(myGuess, word):
     """Rates your guess and returns a word with the following features.
     - Capital letter if the letter is in the right spot
     - Lower case letter if the letter is in the word but in the wrong spot
     - * if the letter is not in the word at all"""
+    feedback = " "
+
+    for spot in range(5):
+        myLetter = myGuess[spot]
+        if inSpot(myLetter, word, spot) == True:
+            feedback = feedback + myLetter.upper()
+        elif inWord(myLetter, word) == True:
+            feedback = feedback + myLetter.lower()
+        else:
+            feedback = feedback + "*"
+    return feedback
 
 
 def main():
@@ -28,10 +44,30 @@ def main():
     print(todayWord)
 
     #User should get 6 guesses to guess
+    guessNumber = 1
+    while guessNumber <= 6:
 
-    #Ask user for their guess
-    #Give feedback using on their word:
+        validWord = False
+        while validWord == False:
+            guess = input("Enter your guess: ")
+            guess = guess.lower() 
+            if guess not in wordList:
+                print("Word is not in list")
+                validWord = False
+            else:
+                validWord = True
 
+        #Ask user for their guess
+        #Give feedback using on their word:
+        feedback = rateGuess(guess, todayWord)
+        print(feedback)
+        if feedback == todayWord.upper():
+            print("You guessed the word in ", guessNumber, " tries!")
+            break
+
+        guessNumber = guessNumber + 1
+
+    print("The word was " + todayWord)
 
 
 
